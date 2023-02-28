@@ -1,0 +1,43 @@
+# your workflow name 
+name: Deplot=y to heruku
+
+# run workflow on every push to main branch 
+on:
+  push:
+    branches: [main]
+
+# your workflows jobs 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      #check-out your repository. 
+      -name: checkout 
+      uses: actions/checkout@v2
+
+      ###Important Part ###
+
+      -name:Build,push and release a docker container to heruku.
+      uses: gonuit/heruku-docker-deploy@v1.3.3 #github action name
+      with:
+
+      #below you must provide variables for heruku app 
+
+      # email address assosiciated with heruku app 
+      #if you dont like to use your repository secrets then you can do :
+      email: ${{ secrets.HEROKU_EMAIL }}
+
+      heroku_api_keys: ${{ secrets.HEROKU_API_KEY}}
+
+      heroku_app_name:  ${{ secrets.HEROKU_APP_NAME}}
+
+
+      dockerfile_directory: ./
+      dockerfile_name: Dockerfile 
+
+      docker_options: "--no-cache"
+
+      process_type: web 
+
+      
